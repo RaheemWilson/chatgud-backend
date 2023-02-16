@@ -21,12 +21,24 @@ if settings.BACKEND_CORS_ORIGINS:
         allow_headers=["*"],
     )
 
-app.include_router(api_router, prefix=settings.API_V1_STR)
+app.include_router(api_router)
 
 @app.on_event("startup")
 async def startup():
-    await prisma.connect()
+    try:
+        await prisma.connect()
+        roles = [{
+            "name": "admin",
+            "permissions": []
+        }]
+    except:
+        return None
+
 
 @app.on_event("shutdown")
 async def shutdown():
     await prisma.disconnect()
+
+@app.get("/")
+def read_root():
+    return {"version": "1.0.0"}

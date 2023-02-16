@@ -29,6 +29,9 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "chatgud"
 
     DATABASE_URL: str
+    SECRET_KEY: str
+    ALGORITHM: str
+    ACCESS_TOKEN_EXPIRE_MINUTES: int
 
     # SMTP_TLS: bool = True
     # SMTP_PORT: Optional[int] = None
