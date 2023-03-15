@@ -9,19 +9,148 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id       String  @id @default(uuid())
-  email    String  @unique
-  username String?
-  gender   String
-  age      Int
-  role     Role    @relation(fields: [roleId], references: [id])
-  roleId   String
+enum ResourceType {
+  audio
+  image
+  video
+  text
 }
 
-model Role {
-  id          String       @id @default(uuid())
-  name        String       @unique
-  updatedAt   DateTime     @updatedAt
-  User        User[]
+model User {
+  id                 String               @id @default(uuid())
+  email              String               @unique
+  username           String?
+  gender             String
+  age                Int
+  nationality        String
+  password           String
+  CompletedCategory  CompletedCategory[]
+  CompletedQuiz      CompletedQuiz[]
+  CompletedChallenge CompletedChallenge[]
+  // proficiency        Proficiency?         @relation(fields: [proficiencyId], references: [id])
+  // proficiencyId      String?
+}
+
+model Proficiency {
+  id              String @id @default(uuid())
+  name            String @unique
+  description     String
+  preferenceOrder Int
+  Task            Task[]
+  Quiz            Quiz[]
+  // User            User[]
+}
+
+model Resource {
+  id            String       @id @default(uuid())
+  name          String
+  type          ResourceType
+  transcription String
+  description   String
+  media         String
+  category      Category?
+  Task          Task[]
+  TaskQuestion  TaskChoice[]
+}
+
+model Category {
+  id                String              @id @default(uuid())
+  name              String
+  resource          Resource            @relation(fields: [resourceId], references: [id])
+  description       String?
+  resourceId        String              @unique
+  Task              Task[]
+  Quiz              Quiz[]
+  CompletedCategory CompletedCategory[]
+  CategoryActivity  CategoryActivity[]
+}
+
+model Task {
+  id               String             @id @default(uuid())
+  problem          String
+  resource         Resource           @relation(fields: [answer], references: [id])
+  category         Category           @relation(fields: [categoryId], references: [id])
+  proficiency      Proficiency        @relation(fields: [proficiencyId], references: [id])
+  answer           String
+  categoryId       String
+  proficiencyId    String
+  taskChoice       TaskChoice         @relation(fields: [options], references: [id])
+  options          String
+  DailyChallenge   DailyChallenge?
+  type             String
+  QuizQuestion     QuizQuestion[]
+  CategoryActivity CategoryActivity[]
+}
+
+model CategoryActivity {
+  id         String   @id @default(uuid())
+  category   Category @relation(fields: [categoryId], references: [id])
+  task       Task     @relation(fields: [taskId], references: [id])
+  taskId     String
+  categoryId String
+}
+
+model TaskChoice {
+  id      String     @id @default(uuid())
+  choices Resource[]
+  Task    Task[]
+}
+
+model QuizQuestion {
+  id            String @id @default(uuid())
+  task          Task   @relation(fields: [taskId], references: [id])
+  quiz          Quiz   @relation(fields: [quizId], references: [id])
+  taskId        String
+  quizId        String
+  questionOrder Int
+}
+
+model Quiz {
+  id            String          @id @default(uuid())
+  category      Category        @relation(fields: [categoryId], references: [id])
+  categoryId    String
+  proficiency   Proficiency     @relation(fields: [proficiencyId], references: [id])
+  proficiencyId String
+  CompletedQuiz CompletedQuiz[]
+  QuizQuestion  QuizQuestion[]
+}
+
+model DailyChallenge {
+  id                 String               @id @default(uuid())
+  problem            Task                 @relation(fields: [taskId], references: [id])
+  taskId             String               @unique
+  dayOrder           Int
+  CompletedChallenge CompletedChallenge[]
+}
+
+model CompletedCategory {
+  id            String   @id @default(uuid())
+  user          User     @relation(fields: [userId], references: [id])
+  category      Category @relation(fields: [categoryId], references: [id])
+  userId        String
+  categoryId    String
+  score         Int
+  dateStarted   DateTime @default(now())
+  dateCompleted DateTime @default(now())
+}
+
+model CompletedQuiz {
+  id            String   @id @default(uuid())
+  user          User     @relation(fields: [userId], references: [id])
+  quiz          Quiz     @relation(fields: [quizId], references: [id])
+  score         Int
+  dateStarted   DateTime @default(now())
+  dateCompleted DateTime @default(now())
+  userId        String
+  quizId        String
+}
+
+model CompletedChallenge {
+  id               String         @id @default(uuid())
+  user             User           @relation(fields: [userId], references: [id])
+  challenge        DailyChallenge @relation(fields: [dailyChallengeId], references: [id])
+  dateCompleted    DateTime       @default(now())
+  score            Int
+  userId           String
+  dailyChallengeId String
 }

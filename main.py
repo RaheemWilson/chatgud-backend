@@ -3,13 +3,15 @@ from starlette.middleware.cors import CORSMiddleware
 
 from app.api.routes import api_router
 from app.utils.settings import get_settings
-from app.prisma import prisma
+from prisma import Prisma, register
 
 settings = get_settings()
 
 app = FastAPI(
     title=settings.PROJECT_NAME, openapi_url=f"{settings.API_V1_STR}/openapi.json"
 )
+
+prisma = Prisma(auto_register=True)
 
 # Set all CORS enabled origins
 if settings.BACKEND_CORS_ORIGINS:
@@ -25,14 +27,7 @@ app.include_router(api_router)
 
 @app.on_event("startup")
 async def startup():
-    try:
-        await prisma.connect()
-        roles = [{
-            "name": "admin",
-            "permissions": []
-        }]
-    except:
-        return None
+    await prisma.connect()
 
 
 @app.on_event("shutdown")
