@@ -20,15 +20,14 @@ model User {
   id                 String               @id @default(uuid())
   email              String               @unique
   username           String?
-  gender             String
   age                Int
   nationality        String
   password           String
   CompletedCategory  CompletedCategory[]
   CompletedQuiz      CompletedQuiz[]
   CompletedChallenge CompletedChallenge[]
-  // proficiency        Proficiency?         @relation(fields: [proficiencyId], references: [id])
-  // proficiencyId      String?
+  proficiency        Proficiency?         @relation(fields: [proficiencyId], references: [id])
+  proficiencyId      String?
 }
 
 model Proficiency {
@@ -38,7 +37,7 @@ model Proficiency {
   preferenceOrder Int
   Task            Task[]
   Quiz            Quiz[]
-  // User            User[]
+  User            User[]
 }
 
 model Resource {

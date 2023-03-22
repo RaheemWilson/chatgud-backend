@@ -41,7 +41,6 @@ async def register(user: SignUp):
             'email': user.email,
             'username': user.username,
             'nationality': user.nationality,
-            'gender': user.gender,
             'age': user.age,
             'password': password,
         }

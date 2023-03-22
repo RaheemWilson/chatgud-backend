@@ -14,8 +14,7 @@ class SignUp(BaseModel):
     email: str
     username: str
     password: str
-    gender: str
     age: int
     nationality: str
-    proficiency: Optional[int]
+    proficiency: Optional[str]
     

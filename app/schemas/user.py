@@ -16,6 +16,5 @@ class User(BaseModel):
     id: str
     username: str
     email: str
-    gender: Gender
     age: int
     nationality: str

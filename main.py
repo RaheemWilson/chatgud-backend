@@ -3,15 +3,16 @@ from starlette.middleware.cors import CORSMiddleware
 
 from app.api.routes import api_router
 from app.utils.settings import get_settings
-from prisma import Prisma, register
+from db import db
+import asyncio
+
+from files.parse_files import parse_file
 
 settings = get_settings()
 
 app = FastAPI(
     title=settings.PROJECT_NAME, openapi_url=f"{settings.API_V1_STR}/openapi.json"
 )
-
-prisma = Prisma(auto_register=True)
 
 # Set all CORS enabled origins
 if settings.BACKEND_CORS_ORIGINS:
@@ -27,12 +28,16 @@ app.include_router(api_router)
 
 @app.on_event("startup")
 async def startup():
-    await prisma.connect()
-
+    await db.connect()
+    levels = parse_file("files/proficiency.csv")
+    # Proficiency.db().find_many()
+    await db.proficiency.delete_many()
+    await db.proficiency.create_many(data=levels)
+    
 
 @app.on_event("shutdown")
 async def shutdown():
-    await prisma.disconnect()
+    await db.disconnect()
 
 @app.get("/")
 def read_root():
