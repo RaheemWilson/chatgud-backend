@@ -26,7 +26,7 @@ executing==1.2.0
 fastapi==0.91.0
 fastjsonschema==2.16.2
 filelock==3.9.0
-Flask==2.0.3
+Flask==2.2.3
 Flask-Login==0.6.0
 Flask-Migrate==3.1.0
 Flask-SQLAlchemy==2.5.1
@@ -37,7 +37,7 @@ httpcore==0.16.3
 httptools==0.5.0
 httpx==0.23.3
 idna==3.4
-importlib-metadata==5.0.0
+importlib-metadata==6.0.0
 ipykernel==6.16.2
 ipython==8.5.0
 ipython-genutils==0.2.0
@@ -57,6 +57,7 @@ Mako==1.2.0
 MarkupSafe==2.1.2
 matplotlib-inline==0.1.6
 mistune==2.0.4
+mysql-connector-python==8.0.32
 nbclassic==0.4.5
 nbclient==0.7.0
 nbconvert==7.2.3
@@ -65,7 +66,7 @@ nest-asyncio==1.5.6
 nodeenv==1.7.0
 notebook==6.5.1
 notebook_shim==0.2.0
-numpy==1.23.4
+numpy==1.24.2
 orjson==3.8.6
 packaging==21.3
 pandas==1.5.3
@@ -78,6 +79,7 @@ platformdirs==3.1.1
 prisma==0.8.0
 prometheus-client==0.15.0
 prompt-toolkit==3.0.31
+protobuf==3.20.3
 psutil==5.9.3
 psycopg2==2.9.3
 ptyprocess==0.7.0
@@ -124,7 +126,7 @@ wcwidth==0.2.5
 webencodings==0.5.1
 websocket-client==1.4.1
 websockets==10.4
-Werkzeug==2.0.3
+Werkzeug==2.2.3
 widgetsnbextension==4.0.3
 WTForms==3.0.1
-zipp==3.10.0
+zipp==3.15.0
