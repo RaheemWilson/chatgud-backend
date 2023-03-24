@@ -15,7 +15,6 @@ async def login(login: Login):
             }
         )
         validated = verify_password(login.password, user.password)
-        del user.password
         if validated:
             access_token = create_access_token({ 'sub': user.id })
             return LoginResponse(user=user, token=access_token)
@@ -43,6 +42,11 @@ async def register(user: SignUp):
             'nationality': user.nationality,
             'age': user.age,
             'password': password,
+            'proficiency': {
+                'connect': {
+                    'id': user.proficiency
+                }
+            }
         }
     )
     
@@ -53,7 +57,6 @@ async def register(user: SignUp):
     del new_user.password
     
     return LoginResponse(user=new_user, token=access_token)
-        
     
     
     

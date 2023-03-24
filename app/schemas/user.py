@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from enum import Enum
+from datetime import datetime
 
 class Gender(Enum):
     MALE = 'male'
@@ -18,3 +19,4 @@ class User(BaseModel):
     email: str
     age: int
     nationality: str
+    dateCreated: datetime

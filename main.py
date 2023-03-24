@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
 from app.api.routes import api_router
+from app.utils.init_db import init_db
 from app.utils.settings import get_settings
 from db import db
 import asyncio
@@ -29,10 +30,7 @@ app.include_router(api_router)
 @app.on_event("startup")
 async def startup():
     await db.connect()
-    levels = parse_file("files/proficiency.csv")
-    # Proficiency.db().find_many()
-    await db.proficiency.delete_many()
-    await db.proficiency.create_many(data=levels)
+    await init_db()
     
 
 @app.on_event("shutdown")

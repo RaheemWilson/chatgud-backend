@@ -23,6 +23,7 @@ model User {
   age                Int
   nationality        String
   password           String
+  dateCreated        DateTime?            @default(now())
   CompletedCategory  CompletedCategory[]
   CompletedQuiz      CompletedQuiz[]
   CompletedChallenge CompletedChallenge[]
@@ -47,7 +48,6 @@ model Resource {
   transcription String
   description   String
   media         String
-  category      Category?
   Task          Task[]
   TaskQuestion  TaskChoice[]
 }
@@ -55,9 +55,9 @@ model Resource {
 model Category {
   id                String              @id @default(uuid())
   name              String
-  resource          Resource            @relation(fields: [resourceId], references: [id])
   description       String?
-  resourceId        String              @unique
+  image             String?
+  categoryOrder     Int?
   Task              Task[]
   Quiz              Quiz[]
   CompletedCategory CompletedCategory[]
