@@ -39,7 +39,7 @@ httpx==0.23.3
 idna==3.4
 importlib-metadata==6.0.0
 ipykernel==6.16.2
-ipython==8.5.0
+ipython==8.11.0
 ipython-genutils==0.2.0
 ipywidgets==8.0.2
 itsdangerous==2.1.2
