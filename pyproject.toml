@@ -1,2 +1,2 @@
 [tool.prisma]
-binary_platform = 'native'
+binary_platform = 'debian-openssl-1.1.x'
