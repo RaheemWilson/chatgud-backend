@@ -20,3 +20,9 @@ class User(BaseModel):
     age: int
     nationality: str
     dateCreated: datetime
+    
+class UpdateUser(BaseModel):
+    username: str
+    age: int
+    nationality: str
+    

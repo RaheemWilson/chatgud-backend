@@ -54,7 +54,6 @@ async def register(user: SignUp):
         raise HTTPException(status_code=400, detail='Error occurred during creating user')
     
     access_token = create_access_token({ 'sub': new_user.id })
-    del new_user.password
     
     return LoginResponse(user=new_user, token=access_token)
     
