@@ -32,24 +32,27 @@ model User {
 }
 
 model Proficiency {
-  id              String @id @default(uuid())
-  name            String @unique
-  description     String
-  preferenceOrder Int
-  Task            Task[]
-  Quiz            Quiz[]
-  User            User[]
+  id               String             @id @default(uuid())
+  name             String             @unique
+  description      String
+  preferenceOrder  Int
+  Task             Task[]
+  Quiz             Quiz[]
+  User             User[]
+  CategoryActivity CategoryActivity[]
 }
 
 model Resource {
-  id            String       @id @default(uuid())
-  name          String
-  type          ResourceType
-  transcription String
-  description   String
-  media         String
-  Task          Task[]
-  TaskQuestion  TaskChoice[]
+  id               String       @id @default(uuid())
+  name             String
+  type             ResourceType
+  transcription    String?
+  shortDescription String?
+  longDescription  String?
+  media            String?
+  sampleSentence   String?
+  Task             Task[]
+  TaskQuestion     TaskChoice[]
 }
 
 model Category {
@@ -58,6 +61,7 @@ model Category {
   description       String?
   image             String?
   categoryOrder     Int?
+  totalActivites    Int?                @default(8)
   Task              Task[]
   Quiz              Quiz[]
   CompletedCategory CompletedCategory[]
@@ -82,11 +86,13 @@ model Task {
 }
 
 model CategoryActivity {
-  id         String   @id @default(uuid())
-  category   Category @relation(fields: [categoryId], references: [id])
-  task       Task     @relation(fields: [taskId], references: [id])
-  taskId     String
-  categoryId String
+  id            String      @id @default(uuid())
+  category      Category    @relation(fields: [categoryId], references: [id])
+  task          Task        @relation(fields: [taskId], references: [id])
+  taskId        String
+  categoryId    String
+  proficiency   Proficiency @relation(fields: [proficiencyId], references: [id])
+  proficiencyId String
 }
 
 model TaskChoice {
@@ -129,6 +135,7 @@ model CompletedCategory {
   userId        String
   categoryId    String
   score         Int
+  completed     Int
   dateStarted   DateTime @default(now())
   dateCompleted DateTime @default(now())
 }
