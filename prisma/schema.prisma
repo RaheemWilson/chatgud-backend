@@ -32,14 +32,14 @@ model User {
 }
 
 model Proficiency {
-  id               String             @id @default(uuid())
-  name             String             @unique
-  description      String
-  preferenceOrder  Int
-  Task             Task[]
-  Quiz             Quiz[]
-  User             User[]
-  CategoryActivity CategoryActivity[]
+  id                String              @id @default(uuid())
+  name              String              @unique
+  description       String
+  preferenceOrder   Int
+  Task              Task[]
+  Quiz              Quiz[]
+  User              User[]
+  CompletedCategory CompletedCategory[]
 }
 
 model Resource {
@@ -65,34 +65,23 @@ model Category {
   Task              Task[]
   Quiz              Quiz[]
   CompletedCategory CompletedCategory[]
-  CategoryActivity  CategoryActivity[]
 }
 
 model Task {
-  id               String             @id @default(uuid())
-  problem          String
-  resource         Resource           @relation(fields: [answer], references: [id])
-  category         Category           @relation(fields: [categoryId], references: [id])
-  proficiency      Proficiency        @relation(fields: [proficiencyId], references: [id])
-  answer           String
-  categoryId       String
-  proficiencyId    String
-  taskChoice       TaskChoice         @relation(fields: [options], references: [id])
-  options          String
-  DailyChallenge   DailyChallenge?
-  type             String
-  QuizQuestion     QuizQuestion[]
-  CategoryActivity CategoryActivity[]
-}
-
-model CategoryActivity {
-  id            String      @id @default(uuid())
-  category      Category    @relation(fields: [categoryId], references: [id])
-  task          Task        @relation(fields: [taskId], references: [id])
-  taskId        String
-  categoryId    String
-  proficiency   Proficiency @relation(fields: [proficiencyId], references: [id])
-  proficiencyId String
+  id             String          @id @default(uuid())
+  problem        String
+  resource       Resource        @relation(fields: [answer], references: [id])
+  category       Category        @relation(fields: [categoryId], references: [id])
+  proficiency    Proficiency     @relation(fields: [proficiencyId], references: [id])
+  answer         String
+  categoryId     String
+  proficiencyId  String
+  taskChoice     TaskChoice      @relation(fields: [options], references: [id])
+  options        String
+  DailyChallenge DailyChallenge?
+  type           String
+  QuizQuestion   QuizQuestion[]
+  taskOrder      Int
 }
 
 model TaskChoice {
@@ -129,15 +118,17 @@ model DailyChallenge {
 }
 
 model CompletedCategory {
-  id            String   @id @default(uuid())
-  user          User     @relation(fields: [userId], references: [id])
-  category      Category @relation(fields: [categoryId], references: [id])
+  id            String      @id @default(uuid())
+  user          User        @relation(fields: [userId], references: [id])
+  category      Category    @relation(fields: [categoryId], references: [id])
+  proficiency   Proficiency @relation(fields: [proficiencyId], references: [id])
+  proficiencyId String
   userId        String
   categoryId    String
   score         Int
   completed     Int
-  dateStarted   DateTime @default(now())
-  dateCompleted DateTime @default(now())
+  dateStarted   DateTime    @default(now())
+  dateCompleted DateTime    @default(now())
 }
 
 model CompletedQuiz {

@@ -67,6 +67,7 @@ async def register(user: SignUp):
             "categoryId": category.id,
             "score": 0,
             "completed": 0,
+            "proficiencyId": user.proficiency
         }
         for category in categories
     ]

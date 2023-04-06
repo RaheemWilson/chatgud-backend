@@ -24,6 +24,7 @@ class User(BaseModel):
     nationality: str
     dateCreated: datetime
     proficiency: Optional[Proficiency]
+    proficiencyId: Optional[str]
     
 class UpdateUser(BaseModel):
     username: str
