@@ -14,7 +14,8 @@ class Task(BaseModel):
     problem: str
     category: Optional[Category]
     proficiency: Optional[Proficiency]
-    answer: str
+    answerId: str
+    answer: Resource
     categoryId: str
     proficiencyId: str
     options: str

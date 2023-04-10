@@ -19,6 +19,7 @@ async def get_category(categoryId: str, current_user: User = Depends(get_current
             ]
         },
         include={
+            "answer": True,
             "taskChoice": {"include": {"choices": True}},
         },
     )

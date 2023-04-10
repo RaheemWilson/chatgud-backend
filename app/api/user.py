@@ -1,4 +1,3 @@
-from typing import Annotated
 from fastapi import APIRouter, Depends
 from fastapi import Depends, HTTPException, status
 from app.schemas.user import UpdateUser, User
@@ -31,4 +30,4 @@ async def get_user_categories(current_user: User = Depends(get_current_user)):
         )
         return user_categories
     except Exception as e:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=e)

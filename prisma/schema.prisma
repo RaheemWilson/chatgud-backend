@@ -70,10 +70,10 @@ model Category {
 model Task {
   id             String          @id @default(uuid())
   problem        String
-  resource       Resource        @relation(fields: [answer], references: [id])
+  answer         Resource        @relation(fields: [answerId], references: [id])
   category       Category        @relation(fields: [categoryId], references: [id])
   proficiency    Proficiency     @relation(fields: [proficiencyId], references: [id])
-  answer         String
+  answerId       String
   categoryId     String
   proficiencyId  String
   taskChoice     TaskChoice      @relation(fields: [options], references: [id])
