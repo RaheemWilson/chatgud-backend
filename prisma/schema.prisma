@@ -61,7 +61,8 @@ model Category {
   description       String?
   image             String?
   categoryOrder     Int?
-  totalActivites    Int?                @default(8)
+  beginnerCount     Int?                @default(8)
+  intermediateCount Int?                @default(8)
   Task              Task[]
   Quiz              Quiz[]
   CompletedCategory CompletedCategory[]

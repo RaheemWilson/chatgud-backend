@@ -7,3 +7,5 @@ class Category(BaseModel):
     description: str
     image: str
     categoryOrder: int
+    intermediateCount: int
+    beginnerCount: int

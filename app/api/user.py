@@ -15,7 +15,7 @@ async def update_user(
 ):
     try:
         updated_user = await db.user.update(
-            where={"id": current_user.id}, data=updates.dict(),
+            where={"id": current_user.id}, data=updates.dict(), include={"proficiency": True}
         )
         return updated_user
     except Exception as e:
