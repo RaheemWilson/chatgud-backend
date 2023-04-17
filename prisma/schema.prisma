@@ -43,7 +43,7 @@ model Proficiency {
 }
 
 model Resource {
-  id               String       @id @default(uuid())
+  id               String         @id @default(uuid())
   name             String
   type             ResourceType
   transcription    String?
@@ -53,6 +53,7 @@ model Resource {
   sampleSentence   String?
   Task             Task[]
   TaskQuestion     TaskChoice[]
+  QuizQuestion     QuizQuestion[]
 }
 
 model Category {
@@ -92,12 +93,14 @@ model TaskChoice {
 }
 
 model QuizQuestion {
-  id            String @id @default(uuid())
-  task          Task   @relation(fields: [taskId], references: [id])
-  quiz          Quiz   @relation(fields: [quizId], references: [id])
-  taskId        String
-  quizId        String
-  questionOrder Int
+  id                 String   @id @default(uuid())
+  task               Task     @relation(fields: [taskId], references: [id])
+  quiz               Quiz     @relation(fields: [quizId], references: [id])
+  taskId             String
+  quizId             String
+  questionOrder      Int
+  questionResource   Resource? @relation(fields: [questionResourceId], references: [id])
+  questionResourceId String?
 }
 
 model Quiz {
@@ -106,8 +109,8 @@ model Quiz {
   categoryId    String
   proficiency   Proficiency     @relation(fields: [proficiencyId], references: [id])
   proficiencyId String
-  CompletedQuiz CompletedQuiz[]
-  QuizQuestion  QuizQuestion[]
+  completedQuiz CompletedQuiz[]
+  quizQuestion  QuizQuestion[]
 }
 
 model DailyChallenge {
@@ -136,7 +139,7 @@ model CompletedQuiz {
   id            String   @id @default(uuid())
   user          User     @relation(fields: [userId], references: [id])
   quiz          Quiz     @relation(fields: [quizId], references: [id])
-  score         Int
+  score         Int      @default(0)
   dateStarted   DateTime @default(now())
   dateCompleted DateTime @default(now())
   userId        String

@@ -67,11 +67,24 @@ async def register(user: SignUp):
             "categoryId": category.id,
             "score": 0,
             "completed": 0,
-            "proficiencyId": user.proficiency
+            "proficiencyId": user.proficiency,
         }
         for category in categories
     ]
-    
+
     await db.completedcategory.create_many(data=init_categories)
+
+    quizzes = await db.quiz.find_many(where={"proficiencyId": user.proficiency})
+
+    init_quizzes = [
+        {
+            "userId": new_user.id,
+            "quizId": quiz.id,
+            "score": 0
+        }
+        for quiz in quizzes
+    ]
+    
+    await db.completedquiz.create_many(data=init_quizzes)
 
     return LoginResponse(user=new_user, token=access_token)

@@ -96,4 +96,30 @@ async def init_db():
         if not is_task_in_db:
             await db.task.create(data=task)
             
+    #Create quiz
+    quizzes = parse_file("files/quiz.csv")      
+    
+    for quiz in quizzes:
+        is_quiz_in_db = await db.quiz.find_first(
+            where={
+                'id': quiz['id']
+            }
+        )
+        
+        if not is_quiz_in_db:
+            await db.quiz.create(data=quiz)
+            
+    #Create quiz
+    questions = parse_file("files/quiz-questions.csv")   
+    
+    for question in questions:
+        is_question_in_db = await db.quizquestion.find_first(
+            where={
+                'id': question['id']
+            }
+        )
+        
+        if not is_question_in_db:
+            await db.quizquestion.create(data=question)
+            
     

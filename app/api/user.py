@@ -15,7 +15,9 @@ async def update_user(
 ):
     try:
         updated_user = await db.user.update(
-            where={"id": current_user.id}, data=updates.dict(), include={"proficiency": True}
+            where={"id": current_user.id},
+            data=updates.dict(),
+            include={"proficiency": True},
         )
         return updated_user
     except Exception as e:
@@ -29,5 +31,17 @@ async def get_user_categories(current_user: User = Depends(get_current_user)):
             where={"userId": current_user.id}, include={"category": True}
         )
         return user_categories
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=e)
+
+
+@router.get("/user/quizzes", status_code=200)
+async def get_user_quizzes(current_user: User = Depends(get_current_user)):
+    try:
+        user_quizzes = await db.completedquiz.find_many(
+            where={"userId": current_user.id},
+            include={"quiz": {"include": {"category": True}}},
+        )
+        return user_quizzes
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=e)

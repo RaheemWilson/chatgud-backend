@@ -22,5 +22,25 @@ class Task(BaseModel):
     type: str
     taskOrder: int
     taskChoice: TaskChoice
+
+class QuizQuestion(BaseModel):
+    id: str
+    task: Task
+    quizId: str
+    taskId: str
+    questionOrder: int
+    questionResource: Optional[Resource]
+    questionResourceId: Optional[str]
+
+class Quiz(BaseModel):
+    id: str
+    category: Optional[Category]
+    categoryId: str
+    proficiency: Optional[Proficiency]
+    proficiencyId: str
+    quizQuestion: List[QuizQuestion]
+
+
+    
         
     
