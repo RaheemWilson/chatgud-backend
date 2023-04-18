@@ -16,6 +16,10 @@ class UpdateCategory(BaseModel):
     completed: int
     categoryId: str
     proficiencyId: str
+    
+class UpdateQuiz(BaseModel):
+    questionsCorrect: int
+    quizId: str
 
 
 @router.put("/category", status_code=200, response_model=SuccessResponse)
@@ -33,6 +37,28 @@ async def update_user_category(
                 ]
             },
             data={"completed": data.completed, "score": score},
+        )
+
+        return SuccessResponse(success=True)
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+    
+    
+@router.put("/quiz", status_code=200, response_model=SuccessResponse)
+async def update_user_quiz(
+    data: UpdateQuiz, current_user: User = Depends(get_current_user)
+):
+    try:
+        score = data.questionsCorrect * 20
+        await db.completedquiz.update_many(
+            where={
+                "AND": [
+                    {"quizId": data.quizId},
+                    {"userId": current_user.id},
+                ]
+            },
+            data={"score": score},
         )
 
         return SuccessResponse(success=True)
