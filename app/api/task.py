@@ -1,7 +1,7 @@
 from typing import List
 from fastapi import APIRouter, Depends
 
-from app.schemas.task import Quiz, Task
+from app.schemas.task import DailyChallenge, Quiz, Task
 from app.schemas.user import User
 from app.utils.auth import get_current_user
 from db import db
@@ -40,7 +40,7 @@ async def get_quiz(quizId: str, current_user: User = Depends(get_current_user)):
                             "answer": True,
                         }
                     },
-                    "questionResource": True
+                    "questionResource": True,
                 }
             },
         },
@@ -62,6 +62,26 @@ async def get_quiz(current_user: User = Depends(get_current_user)):
                             "answer": True,
                         }
                     }
+                }
+            },
+        },
+    )
+
+
+@router.get("/tasks/challenges", response_model=List[DailyChallenge], status_code=200)
+async def get_quiz(dayOrder: int, current_user: User = Depends(get_current_user)):
+    return await db.dailychallenge.find_many(
+        where={
+            "AND": [
+                {"problem": {"proficiencyId": current_user.proficiencyId}},
+                {"dayOrder": dayOrder},
+            ]
+        },
+        include={
+            "problem": {
+                "include": {
+                    "taskChoice": {"include": {"choices": True}},
+                    "answer": True,
                 }
             },
         },

@@ -39,6 +39,11 @@ class Quiz(BaseModel):
     proficiency: Optional[Proficiency]
     proficiencyId: str
     quizQuestion: List[QuizQuestion]
+    
+class DailyChallenge(BaseModel): 
+    id: str
+    problem: Task
+    dayOrder: int
 
 
     

@@ -122,4 +122,17 @@ async def init_db():
         if not is_question_in_db:
             await db.quizquestion.create(data=question)
             
+    #Create daily challenge
+    challenges = parse_file("files/daily.csv")   
+    
+    for challenge in challenges:
+        is_challenge_in_db = await db.dailychallenge.find_first(
+            where={
+                'id': challenge['id']
+            }
+        )
+        
+        if not is_challenge_in_db:
+            await db.dailychallenge.create(data=challenge)
+            
     

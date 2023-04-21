@@ -31,3 +31,12 @@ class UpdateUser(BaseModel):
     age: int
     nationality: str
     
+class UserOverview(BaseModel):
+    score: int
+    completedQuiz: int
+    completedChallenges: int
+    completedCategories: int
+    quizScore: int
+    challengeScore: int
+    categoryScore: int
+    
