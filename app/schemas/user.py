@@ -40,3 +40,8 @@ class UserOverview(BaseModel):
     challengeScore: int
     categoryScore: int
     
+class Users(BaseModel): 
+    id: str
+    username: str
+    score: int
+    

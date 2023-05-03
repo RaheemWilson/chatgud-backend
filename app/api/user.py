@@ -1,6 +1,7 @@
+from typing import List
 from fastapi import APIRouter, Depends
 from fastapi import Depends, HTTPException, status
-from app.schemas.user import UpdateUser, User, UserOverview
+from app.schemas.user import UpdateUser, User, UserOverview, Users
 from fastapi.responses import JSONResponse
 
 from app.utils.auth import get_current_user
@@ -79,3 +80,41 @@ async def get_user_overview(current_user: User = Depends(get_current_user)):
         return UserOverview(**score_details)
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=e)
+  
+    
+@router.get("/users/leaderboard", response_model=List[Users], status_code=200)
+async def get_user_overview(current_user: User = Depends(get_current_user)):
+    try:
+        users = []
+        
+        db_users = await db.user.find_many()
+        
+        for user in db_users:
+            user_quizzes = await db.completedquiz.find_many(
+                where={"AND": [{"userId": user.id}, {"score": {"gt": 0}}]},
+            )
+            # print(type user_quizzes, 'type')
+            user_cat = await db.completedcategory.find_many(
+                where={"AND": [{"userId": user.id}, {"score": {"gt": 0}}]},
+            )
+            user_chal = await db.completedchallenge.find_many(
+                where={"AND": [{"userId": user.id}, {"score": {"gt": 0}}]},
+            )
+
+            user_quizzes_score = sum([quiz.score for quiz in user_quizzes])
+            user_cat_score = sum([cat.score for cat in user_cat])
+            user_chal_score = sum([chal.score for chal in user_chal])
+            
+            user_detail = {
+                "id": user.id,
+                "score": user_cat_score + user_chal_score + user_quizzes_score,
+                "username": user.username
+            }
+            
+            users += [user_detail]
+
+        return users
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=e)
+    
+
