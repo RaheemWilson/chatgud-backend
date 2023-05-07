@@ -39,6 +39,7 @@ class UserOverview(BaseModel):
     quizScore: int
     challengeScore: int
     categoryScore: int
+    isDailyChallengeCompleted: bool
     
 class Users(BaseModel): 
     id: str

@@ -10,16 +10,23 @@ router = APIRouter()
 
 class SuccessResponse(BaseModel):
     success: bool
+    score: Optional[int]
 
 
 class UpdateCategory(BaseModel):
     completed: int
     categoryId: str
     proficiencyId: str
-    
+
+
 class UpdateQuiz(BaseModel):
     questionsCorrect: int
     quizId: str
+
+
+class UpdateChallenge(BaseModel):
+    dailyChallengeId: str
+    evaluation: int
 
 
 @router.put("/category", status_code=200, response_model=SuccessResponse)
@@ -27,7 +34,7 @@ async def update_user_category(
     data: UpdateCategory, current_user: User = Depends(get_current_user)
 ):
     try:
-        score = data.completed * 10
+        score = data.completed * 30
         await db.completedcategory.update_many(
             where={
                 "AND": [
@@ -39,12 +46,12 @@ async def update_user_category(
             data={"completed": data.completed, "score": score},
         )
 
-        return SuccessResponse(success=True)
+        return SuccessResponse(success=True, score=score)
     except Exception as e:
         print(e)
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
-    
-    
+
+
 @router.put("/quiz", status_code=200, response_model=SuccessResponse)
 async def update_user_quiz(
     data: UpdateQuiz, current_user: User = Depends(get_current_user)
@@ -61,7 +68,27 @@ async def update_user_quiz(
             data={"score": score},
         )
 
-        return SuccessResponse(success=True)
+        return SuccessResponse(success=True, score=score)
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+
+
+@router.post("/challenge", status_code=201, response_model=SuccessResponse)
+async def update_user_challenge(
+    data: UpdateChallenge, current_user: User = Depends(get_current_user)
+):
+    try:
+        score = data.evaluation * 20
+        await db.completedchallenge.create(
+            data={
+                "dailyChallengeId": data.dailyChallengeId,
+                "score": score,
+                "userId": current_user.id,
+            },
+        )
+
+        return SuccessResponse(success=True, score=score)
     except Exception as e:
         print(e)
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))

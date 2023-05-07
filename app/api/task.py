@@ -16,6 +16,7 @@ async def get_category(categoryId: str, current_user: User = Depends(get_current
             "AND": [
                 {"categoryId": categoryId},
                 {"proficiencyId": current_user.proficiencyId},
+                {"taskType": "course"}
             ]
         },
         include={

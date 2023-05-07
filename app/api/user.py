@@ -75,6 +75,7 @@ async def get_user_overview(current_user: User = Depends(get_current_user)):
             "quizScore": user_quizzes_score,
             "challengeScore": user_chal_score,
             "categoryScore": user_cat_score,
+            "isDailyChallengeCompleted": len(user_chal) > 0   
         }
 
         return UserOverview(**score_details)

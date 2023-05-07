@@ -16,6 +16,12 @@ enum ResourceType {
   text
 }
 
+enum TaskType {
+  course
+  quiz
+  challenge
+}
+
 model User {
   id                 String               @id @default(uuid())
   email              String               @unique
@@ -84,6 +90,7 @@ model Task {
   type           String
   QuizQuestion   QuizQuestion[]
   taskOrder      Int
+  taskType           TaskType
 }
 
 model TaskChoice {
