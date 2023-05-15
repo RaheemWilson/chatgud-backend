@@ -41,7 +41,6 @@ Flask-Login==0.6.0
 Flask-Migrate==3.1.0
 Flask-SQLAlchemy==2.5.1
 Flask-WTF==1.0.1
-<<<<<<< HEAD
 flatbuffers==23.5.9
 fqdn==1.5.1
 future==0.18.3
@@ -50,10 +49,6 @@ google-auth==2.18.0
 google-auth-oauthlib==1.0.0
 google-pasta==0.2.0
 grpcio==1.54.0
-=======
-fqdn==1.5.1
-future==0.18.3
->>>>>>> 5299545990942f48955d86ae527977eee26b53e7
 gunicorn==20.1.0
 h11==0.14.0
 h5py==3.8.0
