@@ -71,6 +71,7 @@ async def get_quiz(current_user: User = Depends(get_current_user)):
 
 @router.get("/tasks/challenges", response_model=List[DailyChallenge], status_code=200)
 async def get_quiz(dayOrder: int, current_user: User = Depends(get_current_user)):
+    print(current_user.proficiencyId)
     return await db.dailychallenge.find_many(
         where={
             "AND": [

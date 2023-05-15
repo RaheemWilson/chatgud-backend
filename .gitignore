@@ -10,3 +10,5 @@ __pycache__
 .space
 
 .DS_STORE
+
+model.h5
