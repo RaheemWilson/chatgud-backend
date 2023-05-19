@@ -1,5 +1,9 @@
+from typing import Optional
 from pydantic import BaseModel
 from enum import Enum
+from datetime import datetime
+
+from app.schemas.proficiency import Proficiency
 
 class Gender(Enum):
     MALE = 'male'
@@ -16,8 +20,29 @@ class User(BaseModel):
     id: str
     username: str
     email: str
-    username: str
-    gender: Gender
     age: int
-    role: Role
-    disabled: bool
+    nationality: str
+    dateCreated: datetime
+    proficiency: Optional[Proficiency]
+    proficiencyId: Optional[str]
+    
+class UpdateUser(BaseModel):
+    username: str
+    age: int
+    nationality: str
+    
+class UserOverview(BaseModel):
+    score: int
+    completedQuiz: int
+    completedChallenges: int
+    completedCategories: int
+    quizScore: int
+    challengeScore: int
+    categoryScore: int
+    isDailyChallengeCompleted: bool
+    
+class Users(BaseModel): 
+    id: str
+    username: str
+    score: int
+    

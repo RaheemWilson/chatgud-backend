@@ -4,6 +4,7 @@ from fastapi.security import OAuth2PasswordBearer
 
 from jose import JWTError, jwt
 from passlib.context import CryptContext
+from db import db
 
 from app.schemas.user import User
 from app.utils.settings import get_settings
@@ -20,13 +21,15 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     )
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
-        username: str = payload.get("sub")
-        if username is None:
+        user_id: str = payload.get("sub")
+        if user_id is None:
             raise credentials_exception
     except JWTError:
         raise credentials_exception
     # TODO: Add db request
-    user = None
+    user = await db.user.find_unique(where={
+        'id': user_id,
+    })
     if user is None:
         raise credentials_exception
     return user
