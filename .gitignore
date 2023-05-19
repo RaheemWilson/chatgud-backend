@@ -11,4 +11,4 @@ __pycache__
 
 .DS_STORE
 
-model.h5
+model*.h5

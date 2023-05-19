@@ -24,6 +24,10 @@ def get_spectrogram_image(waveform, sr=22050):
     mel_spectrogram.set_shape(
         spectrogram.shape[:-1].concatenate(linear_to_mel_weight_matrix.shape[-1:])
     )
+    
+    min_val = tf.reduce_min(mel_spectrogram)
+    max_val = tf.reduce_max(mel_spectrogram)
+    mel_spectrogram = (mel_spectrogram - min_val) / (max_val - min_val)
 
     mel_spectrogram = tf.expand_dims(mel_spectrogram, -1)
 

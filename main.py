@@ -7,6 +7,7 @@ from app.utils.init_db import init_db
 from app.utils.settings import get_settings
 from db import db
 import asyncio
+from pydub import AudioSegment
 
 from files.parse_files import parse_file
 
@@ -64,7 +65,7 @@ async def startup():
         }
     ):
         global model
-        model = load_model("model.h5")
+        model = load_model("model-2.h5")
     
 
 @app.on_event("shutdown")
@@ -88,17 +89,27 @@ async def evaluate_audio(ref_url: str = Form(...), file: UploadFile = File(...))
         f.write(await file.read())
 
     f.close()
+    
+    wav_ref = f"files/audio/audio1.wav"
+    wav_test = f"files/audio/audio2.wav"
+    
+    audio = AudioSegment.from_file(ref_path)
+    audio.export(wav_ref, format="wav")
+    
+    audio1 = AudioSegment.from_file(test_path)
+    audio1.export(wav_test, format="wav")
 
-    ref_audio = process_audio(ref_path)
-    test_audio = process_audio(test_path)
+    ref_audio = process_audio(wav_ref)
+    test_audio = process_audio(wav_test)
 
     os.remove(ref_path)
     os.remove(test_path)
+    os.remove(wav_test)
+    os.remove(wav_ref)
 
     prediction = model.predict([ref_audio, test_audio])
     prediction_score = prediction[0][0]
 
-    print(prediction_score)
     if prediction_score <= 0.25:
         return Evaluation(prediction=1)
     elif 0.25 < prediction_score <= 0.5:
